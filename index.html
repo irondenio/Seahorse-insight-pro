@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Cosmetics Insight Pro – Pilotage industriel & commercial pour les entreprises cosmétiques. KPI, analyses, prévisions, rapports." />
+  <title>Cosmetics Insight Pro | Pilotage industriel & ventes (Cosmétiques)</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a30;
+      --card2:#0c162b;
+      --text:#eaf0ff;
+      --muted:#a8b3d6;
+      --accent:#7c5cff;
+      --accent2:#2de2e6;
+      --ok:#2dd4bf;
+      --warn:#fbbf24;
+      --danger:#fb7185;
+      --border:rgba(255,255,255,.10);
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(45,226,230,.16), transparent 60%),
+        linear-gradient(180deg, #060a14, var(--bg));
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px;}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(6,10,20,.55);
+      border-bottom:1px solid var(--border);
+    }
+    .navin{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(124,92,255,.25);
+    }
+    .navlinks{display:flex; gap:18px; align-items:center; color:var(--muted); font-weight:600; font-size:14px;}
+    .navlinks a:hover{color:var(--text)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.07)}
+    .btn.primary{
+      border: none;
+      background: linear-gradient(135deg, var(--accent), #5b46ff);
+      box-shadow: 0 16px 40px rgba(124,92,255,.25);
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .btn.ghost{background:transparent}
+    .hero{
+      padding:64px 0 24px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media(max-width: 920px){
+      .heroGrid{grid-template-columns:1fr}
+      .navlinks{display:none}
+    }
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight:700;
+      font-size:13px;
+      width: fit-content;
+    }
+    .pill b{color:var(--text)}
+    h1{
+      margin:14px 0 10px;
+      font-size:42px; line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    @media(max-width: 520px){ h1{font-size:34px} }
+    .sub{
+      color: var(--muted);
+      font-size:16px;
+      line-height:1.65;
+      max-width: 62ch;
+    }
+    .ctaRow{display:flex; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap}
+    .trustRow{
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+      margin-top:18px; color:var(--muted); font-weight:600; font-size:13px;
+    }
+    .trustBadge{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius:999px;
+      padding:8px 12px;
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel{
+      padding:18px;
+    }
+    .miniTitle{font-weight:900; letter-spacing:.2px}
+    .kpiRow{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:14px}
+    @media(max-width:520px){ .kpiRow{grid-template-columns:1fr} }
+    .kpi{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px;
+    }
+    .kpi .label{color:var(--muted); font-weight:700; font-size:12px}
+    .kpi .value{font-size:20px; font-weight:900; margin-top:6px}
+    .kpi .note{color:var(--muted); font-size:12px; margin-top:4px}
+    .mock{
+      background: radial-gradient(1000px 700px at 10% 10%, rgba(45,226,230,.12), transparent 60%),
+                  radial-gradient(1000px 700px at 80% 30%, rgba(124,92,255,.14), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+      border-top:1px solid var(--border);
+      padding:16px;
+    }
+    .mock pre{
+      margin:0;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.35);
+      color: #d6deff;
+      font-family: var(--mono);
+      font-size:12px;
+      line-height:1.55;
+      overflow:auto;
+    }
+
+    section{padding:46px 0}
+    .secTitle{
+      font-size:26px;
+      margin:0 0 10px;
+      letter-spacing:-.3px;
+    }
+    .secSub{margin:0; color:var(--muted); line-height:1.7; max-width: 78ch}
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:18px}
+    @media(max-width: 920px){ .grid3{grid-template-columns:1fr} }
+    .feat{
+      padding:18px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .icon{
+      width:40px;height:40px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background: rgba(124,92,255,.18);
+      border:1px solid rgba(124,92,255,.25);
+      margin-bottom:10px;
+      font-weight:900;
+    }
+    .feat h3{margin:8px 0 6px; font-size:16px}
+    .feat p{margin:0; color:var(--muted); line-height:1.65; font-size:14px}
+
+    .how{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:18px;
+    }
+    @media(max-width: 920px){ .how{grid-template-columns:1fr} }
+    .step{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      background: rgba(255,255,255,.03);
+    }
+    .step .n{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:32px;height:32px;border-radius:12px;
+      background: rgba(45,226,230,.12);
+      border:1px solid rgba(45,226,230,.25);
+      font-weight:900; margin-right:10px;
+    }
+    .step h3{margin:0 0 6px; font-size:16px}
+    .step p{margin:0; color:var(--muted); line-height:1.65; font-size:14px}
+
+    .pricing{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:18px;
+    }
+    @media(max-width: 920px){ .pricing{grid-template-columns:1fr} }
+    .plan{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      background: rgba(255,255,255,.03);
+      position:relative;
+    }
+    .plan.featured{
+      background: linear-gradient(180deg, rgba(124,92,255,.18), rgba(255,255,255,.03));
+      border-color: rgba(124,92,255,.30);
+      box-shadow: 0 18px 48px rgba(124,92,255,.18);
+    }
+    .tag{
+      position:absolute; top:14px; right:14px;
+      font-size:12px; font-weight:900;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(124,92,255,.25);
+      border:1px solid rgba(124,92,255,.35);
+    }
+    .plan h3{margin:0 0 6px}
+    .price{font-size:28px; font-weight:900; margin:8px 0 8px}
+    .price small{font-size:13px; color:var(--muted); font-weight:700}
+    ul{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.7}
+    li{margin:6px 0}
+    .plan .btn{width:100%; margin-top:14px}
+
+    .faq{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:18px;
+    }
+    @media(max-width: 920px){ .faq{grid-template-columns:1fr} }
+    details{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:14px 16px;
+      background: rgba(255,255,255,.03);
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:10px 0 0; color:var(--muted); line-height:1.65; font-size:14px}
+
+    .ctaBand{
+      border:1px solid var(--border);
+      border-radius: 22px;
+      padding:22px;
+      background: linear-gradient(135deg, rgba(124,92,255,.20), rgba(45,226,230,.10));
+      display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+      box-shadow: var(--shadow);
+    }
+    .ctaBand h2{margin:0; font-size:22px}
+    .ctaBand p{margin:6px 0 0; color:var(--muted); max-width:70ch}
+    .ctaBand .btnRow{display:flex; gap:10px; flex-wrap:wrap}
+
+    footer{
+      padding:26px 0 42px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .foot{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:center;
+    }
+    .smallLinks{display:flex; gap:14px; flex-wrap:wrap}
+    .smallLinks a:hover{color:var(--text)}
+    .contactCard{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      background: rgba(255,255,255,.03);
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+    }
+    @media(max-width: 920px){ .contactCard{grid-template-columns:1fr} }
+    .field{display:flex; flex-direction:column; gap:6px; margin:8px 0}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    label{font-size:13px; color:var(--muted); font-weight:700}
+    .note2{font-size:12px; color:var(--muted); line-height:1.55}
+    .badgeRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .b{padding:8px 12px; border-radius:999px; border:1px solid var(--border); background: rgba(0,0,0,.18); color:var(--muted); font-weight:700; font-size:12px}
+  </style>
+</head>
+
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap navin">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px; font-weight:900;">Cosmetics Insight Pro</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:700;">Pilotage industriel & ventes</div>
+        </div>
+      </div>
+
+      <div class="navlinks">
+        <a href="#produit">Produit</a>
+        <a href="#benefices">Bénéfices</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <a class="btn primary" href="#contact">Demander une démo</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap heroGrid">
+      <div class="card">
+        <div class="panel">
+          <div class="pill">SaaS pour industriels cosmétiques • <b>KPI</b> • <b>Prévisions</b> • <b>Décision</b></div>
+          <h1>Pilotez production, ventes et marges à partir de vos données.</h1>
+          <p class="sub">
+            Cosmetics Insight Pro centralise vos KPI industriels et commerciaux, identifie les drivers de performance
+            (SKU, régions, canaux, catégories) et anticipe la demande (J+7/J+14) pour améliorer la planification
+            et la rentabilité.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="#contact">Demander une démo</a>
+            <a class="btn ghost" href="#pricing">Voir les tarifs</a>
+            <!-- Remplacez le lien ci-dessous par l'URL de votre application Streamlit si vous avez une démo -->
+            <a class="btn" href="#" onclick="alert('Ajoutez ici le lien de démo Streamlit.'); return false;">Accéder à la démo</a>
+          </div>
+
+          <div class="trustRow">
+            <div class="trustBadge">Déploiement rapide (Cloud)</div>
+            <div class="trustBadge">Filtres métier (SKU / Région / Canal / Catégorie)</div>
+            <div class="trustBadge">Rapports exportables</div>
+            <div class="trustBadge">Prévisions explicables</div>
+          </div>
+
+          <div class="badgeRow">
+            <div class="b">Direction Générale</div>
+            <div class="b">Commercial & Marketing</div>
+            <div class="b">Production & Supply Chain</div>
+            <div class="b">Contrôle de gestion</div>
+          </div>
+        </div>
+
+        <div class="mock">
+          <div class="miniTitle">Aperçu (exemple)</div>
+          <div style="color:var(--muted); font-size:13px; margin-top:6px;">
+            KPI • Drivers • Prévisions (sans complexité)
+          </div>
+          <div class="kpiRow">
+            <div class="kpi">
+              <div class="label">Chiffre d’affaires</div>
+              <div class="value">1 284 550 000 XAF</div>
+              <div class="note">Période filtrée</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Marge opérationnelle</div>
+              <div class="value">182 430 000 XAF</div>
+              <div class="note">Après coûts</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Prévision J+7</div>
+              <div class="value">+6,2%</div>
+              <div class="note">Demande estimée</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <pre><code># Indicateurs & segmentation
+Filtres: Date | SKU | Région | Canal | Catégorie
+- Top SKU par CA
+- CA par région & canal
+- Taux défauts / retours
+- Prévision unités vendues (J+7 / J+14)</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card">
+        <div class="panel">
+          <div class="miniTitle">Ce que vous obtenez</div>
+          <p class="secSub" style="margin-top:8px">
+            Un cockpit métier prêt à l’emploi pour transformer vos données en décisions opérationnelles.
+          </p>
+
+          <div class="grid3" style="grid-template-columns:1fr; margin-top:14px">
+            <div class="feat">
+              <div class="icon">1</div>
+              <h3>KPI exécutifs</h3>
+              <p>CA, marges, volumes, retours, défauts, lead time. Vision immédiate sur périmètre filtré.</p>
+            </div>
+            <div class="feat">
+              <div class="icon">2</div>
+              <h3>Analyse explicative</h3>
+              <p>Drivers par SKU, région, canal, catégorie. Top/Flop et tendances pour agir vite.</p>
+            </div>
+            <div class="feat">
+              <div class="icon">3</div>
+              <h3>Prévisions</h3>
+              <p>Prévision des ventes (J+7/J+14), indicateurs de qualité (MAE/RMSE), projection.</p>
+            </div>
+          </div>
+
+          <div style="margin-top:14px; color:var(--muted); font-size:13px; line-height:1.6">
+            <b style="color:var(--text)">Intégration simple :</b> import CSV/Excel, contrôle de cohérence,
+            et déploiement Cloud. Idéal pour PME/ETI et filiales.
+          </div>
+
+          <div class="ctaRow" style="margin-top:14px">
+            <a class="btn primary" href="#contact">Obtenir une démo</a>
+            <a class="btn" href="#produit">Découvrir le produit</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <!-- PRODUIT -->
+  <section id="produit">
+    <div class="wrap">
+      <h2 class="secTitle">Produit</h2>
+      <p class="secSub">
+        Une plateforme orientée décision, conçue pour la réalité des opérations cosmétiques :
+        segmentation commerciale, performance industrielle, et prévision de la demande.
+      </p>
+
+      <div class="grid3">
+        <div class="feat">
+          <div class="icon">KPI</div>
+          <h3>Tableau de bord</h3>
+          <p>Indicateurs clés par période, usine, SKU, région, canal et catégorie. Vue exécutive et opérationnelle.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">DX</div>
+          <h3>Exploration rapide</h3>
+          <p>Qualité des données, distributions, tendances et ruptures. Comprendre avant d’agir.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">IA</div>
+          <h3>Prédictif</h3>
+          <p>Prévisions simples, explicables et actionnables pour planifier production, stock et distribution.</p>
+        </div>
+      </div>
+
+      <div class="how">
+        <div class="step">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <div class="n">1</div><h3>Connectez vos données</h3>
+          </div>
+          <p>Import CSV/Excel (format standard). Validation automatique et contrôle de cohérence.</p>
+        </div>
+        <div class="step">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <div class="n">2</div><h3>Analysez et segmentez</h3>
+          </div>
+          <p>Filtres métier (SKU, région, canal, catégorie). KPI et drivers pour détecter les leviers.</p>
+        </div>
+        <div class="step">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <div class="n">3</div><h3>Anticipez et optimisez</h3>
+          </div>
+          <p>Prévisions J+7/J+14. Amélioration de la planification et réduction des pertes.</p>
+        </div>
+        <div class="step">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <div class="n">4</div><h3>Partagez</h3>
+          </div>
+          <p>Exports & reporting. Standardisez les décisions (Direction, Commercial, Production).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICES -->
+  <section id="benefices">
+    <div class="wrap">
+      <h2 class="secTitle">Bénéfices</h2>
+      <p class="secSub">
+        Décisions plus rapides, meilleure planification, et visibilité partagée entre équipes.
+      </p>
+
+      <div class="grid3">
+        <div class="feat">
+          <div class="icon">⏱</div>
+          <h3>Gain de temps</h3>
+          <p>Automatisez KPI & reporting. Passez des fichiers aux décisions en quelques minutes.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">📉</div>
+          <h3>Réduction des pertes</h3>
+          <p>Suivi marges, défauts, retours. Détectez les dérives tôt et corrigez.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">📦</div>
+          <h3>Meilleure planification</h3>
+          <p>Prévisions à court terme pour production et stock. Réduisez ruptures et surstocks.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">🧭</div>
+          <h3>Pilotage multi-segments</h3>
+          <p>Analyse par SKU, région, canal, catégorie. Identifiez vos poches de croissance.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">🧩</div>
+          <h3>Adoption facile</h3>
+          <p>Interface claire, sans compétences data requises. Conçu pour les équipes métier.</p>
+        </div>
+        <div class="feat">
+          <div class="icon">🔒</div>
+          <h3>Déploiement sécurisé</h3>
+          <p>Option Cloud ou déploiement dédié. Séparation des données par client (multi-tenant).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <h2 class="secTitle">Tarifs</h2>
+      <p class="secSub">
+        Trois offres pour démarrer vite et évoluer. Les prix ci-dessous sont indicatifs : ajustez selon votre marché.
+      </p>
+
+      <div class="pricing">
+        <div class="plan">
+          <h3>Starter</h3>
+          <div class="price">49–99€ <small>/ mois</small></div>
+          <div class="secSub">Pour démarrer et standardiser vos KPI.</div>
+          <ul>
+            <li>1 utilisateur</li>
+            <li>1 jeu de données</li>
+            <li>Tableau de bord & filtres</li>
+            <li>Exports basiques</li>
+            <li>Support email</li>
+          </ul>
+          <a class="btn" href="#contact">Démarrer</a>
+        </div>
+
+        <div class="plan featured">
+          <div class="tag">Le plus choisi</div>
+          <h3>Pro</h3>
+          <div class="price">199–299€ <small>/ mois</small></div>
+          <div class="secSub">Pour piloter performance et drivers, avec prévisions.</div>
+          <ul>
+            <li>Jusqu’à 5 utilisateurs</li>
+            <li>Analyse explicative avancée</li>
+            <li>Prévisions J+7/J+14</li>
+            <li>Exports & reporting</li>
+            <li>Support prioritaire</li>
+          </ul>
+          <a class="btn primary" href="#contact">Demander une démo</a>
+        </div>
+
+        <div class="plan">
+          <h3>Enterprise</h3>
+          <div class="price">Sur devis <small>(dédié)</small></div>
+          <div class="secSub">Pour multi-sites, intégrations et déploiement privé.</div>
+          <ul>
+            <li>Utilisateurs illimités</li>
+            <li>Multi-entités / multi-pays</li>
+            <li>Déploiement dédié (VPC)</li>
+            <li>Connecteurs (DB / API)</li>
+            <li>SLA & accompagnement</li>
+          </ul>
+          <a class="btn" href="#contact">Parler à un expert</a>
+        </div>
+      </div>
+
+      <div style="margin-top:18px" class="ctaBand">
+        <div>
+          <h2>Vous voulez une démo avec vos données ?</h2>
+          <p>Envoyez un échantillon (CSV/Excel). Nous configurons votre dashboard et une première prévision.</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn primary" href="#contact">Planifier une démo</a>
+          <a class="btn" href="#faq">Lire la FAQ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <h2 class="secTitle">FAQ</h2>
+      <p class="secSub">Réponses aux questions les plus fréquentes sur la mise en place.</p>
+
+      <div class="faq">
+        <details>
+          <summary>Quels formats de données sont supportés ?</summary>
+          <p>CSV et Excel. Un modèle de fichier (colonnes standard : date, SKU, région, canal, catégorie, ventes, coûts) peut être fourni.</p>
+        </details>
+        <details>
+          <summary>Combien de temps pour être opérationnel ?</summary>
+          <p>En mode Starter/Pro : quelques heures à quelques jours selon la qualité des données. En Enterprise : dépend des connecteurs et du périmètre.</p>
+        </details>
+        <details>
+          <summary>Les prévisions sont-elles fiables ?</summary>
+          <p>Les prévisions sont accompagnées d’indicateurs de qualité (MAE/RMSE) et sont conçues comme une aide à la décision à court terme (J+7/J+14).</p>
+        </details>
+        <details>
+          <summary>Mes données sont-elles sécurisées ?</summary>
+          <p>Oui. Possibilité de déploiement dédié. Séparation des espaces client. Contrôle d’accès et options de chiffrement selon l’offre.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <h2 class="secTitle">Contact & Démo</h2>
+      <p class="secSub">
+        Remplissez ce formulaire pour obtenir une démonstration. Vous pouvez aussi demander une version dédiée
+        (multi-sites, intégrations base de données).
+      </p>
+
+      <div class="contactCard">
+        <div>
+          <div class="miniTitle">Demander une démo</div>
+          <p class="secSub" style="margin-top:8px">
+            Conseil : mentionnez votre contexte (pays, canaux, nombre de SKU, fréquence des données).
+          </p>
+
+          <!-- Formulaire statique : à connecter à Formspree / Google Forms / backend plus tard -->
+          <form onsubmit="return submitDemoRequest(event)">
+            <div class="field">
+              <label for="name">Nom / Entreprise</label>
+              <input id="name" name="name" placeholder="Ex. Société ABC / Nom" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="ex. contact@entreprise.com" required />
+            </div>
+            <div class="field">
+              <label for="need">Votre besoin</label>
+              <textarea id="need" name="need" placeholder="Ex. Suivi CA & marges par région + prévision J+14, 500 SKU, 3 ans de données..." required></textarea>
+            </div>
+            <button class="btn primary" type="submit">Envoyer la demande</button>
+            <div class="note2" style="margin-top:10px">
+              Ce formulaire est un exemple. Connectez-le à un service (Formspree, Google Forms) ou à votre backend.
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <div class="miniTitle">Coordonnées</div>
+          <div style="margin-top:10px; color:var(--muted); line-height:1.7">
+            <div><b style="color:var(--text)">Produit :</b> Cosmetics Insight Pro</div>
+            <div><b style="color:var(--text)">Démo :</b> sur demande</div>
+            <div><b style="color:var(--text)">Déploiement :</b> Cloud / Dédicacé</div>
+            <div style="margin-top:12px" class="b">Support : email + onboarding</div>
+          </div>
+
+          <div style="margin-top:14px" class="feat">
+            <h3 style="margin:0 0 8px">Ce que nous pouvons configurer</h3>
+            <p style="margin:0; color:var(--muted); line-height:1.65; font-size:14px">
+              KPIs spécifiques, segmentation personnalisée, import automatique, exports PDF, et version multi-clients.
+            </p>
+          </div>
+
+          <div style="margin-top:14px" class="feat">
+            <h3 style="margin:0 0 8px">Prochaine étape</h3>
+            <p style="margin:0; color:var(--muted); line-height:1.65; font-size:14px">
+              Après votre demande, nous vous proposons une démo guidée et un plan de déploiement (Starter/Pro/Enterprise).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap foot">
+      <div style="display:flex; align-items:center; gap:10px">
+        <div class="logo" aria-hidden="true" style="width:28px;height:28px;border-radius:10px"></div>
+        <div>
+          <div style="font-weight:900; color:var(--text)">Cosmetics Insight Pro</div>
+          <div style="font-size:12px">© <span id="y"></span> – Tous droits réservés</div>
+        </div>
+      </div>
+      <div class="smallLinks">
+        <a href="#produit">Produit</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function submitDemoRequest(e){
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const need = document.getElementById("need").value.trim();
+
+      // Option 1 (simple): ouvrir le client mail avec un email pré-rempli.
+      // Remplacez sales@... par votre adresse.
+      const to = "sales@votre-domaine.com";
+      const subject = encodeURIComponent("Demande de démo – Cosmetics Insight Pro");
+      const body = encodeURIComponent(
+        "Bonjour,\n\nJe souhaite une démonstration.\n\n" +
+        "Nom/Entreprise: " + name + "\n" +
+        "Email: " + email + "\n\n" +
+        "Besoin:\n" + need + "\n\n" +
+        "Cordialement,\n" + name
+      );
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+
+      return false;
+    }
+  </script>
+</body>
+</html>
