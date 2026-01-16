@@ -686,6 +686,11 @@ Filtres: Date | SKU | Région | Canal | Catégorie
               <input id="email" name="email" type="email" placeholder="ex. contact@entreprise.com" required />
             </div>
             <div class="field">
+              <label for="phone">Numéro de téléphone</label>
+             <input id="phone" name="phone" type="tel" placeholder="Ex. +237 6XX XX XX XX" required pattern="^\+?[0-9\s().-]{7,}$" />
+            </div>
+
+            <div class="field">
               <label for="need">Votre besoin</label>
               <textarea id="need" name="need" placeholder="Ex. Suivi CA & marges par région + prévision J+14, 500 SKU, 3 ans de données..." required></textarea>
             </div>
@@ -749,6 +754,7 @@ Filtres: Date | SKU | Région | Canal | Catégorie
       e.preventDefault();
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
       const need = document.getElementById("need").value.trim();
 
       // Option 1 (simple): ouvrir le client mail avec un email pré-rempli.
@@ -759,6 +765,7 @@ Filtres: Date | SKU | Région | Canal | Catégorie
         "Bonjour,\n\nJe souhaite une démonstration.\n\n" +
         "Nom/Entreprise: " + name + "\n" +
         "Email: " + email + "\n\n" +
+        "Téléphone: " + phone + "\n\n" +
         "Besoin:\n" + need + "\n\n" +
         "Cordialement,\n" + name
       );
